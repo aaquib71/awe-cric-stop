@@ -1,0 +1,200 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Awesome Cricket Stop
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths 
+basePath: /
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /getCaptain:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: cricket-stats-controller
+    get:
+      description: Returns the name of the captain of the given country's national Cricket team
+      # used as the method name of the controller
+      operationId: getCaptain
+      parameters:
+        - name: countryName
+          in: query
+          description: The name of the country
+          required: true
+          type: string
+          enum:
+            - "IND"
+            - "AUS"
+            - "WI"
+            - "NZ"
+            - "ENG"
+            - "SA"
+            - "BANG"
+            - "ZIM"
+            - "SL"
+            - "PAK"
+          default: "IND"
+          
+        - name: format
+          in: query
+          description: Test or ODI
+          required: true
+          type: string
+          enum:
+            - "TEST"
+            - "ODI"
+          default: "TEST"
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/GetCaptainResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /getBatsmansRecord:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: cricket-stats-controller
+    get:
+      description: Returns the record of the given batsman
+      # used as the method name of the controller
+      operationId: getBatsmansRecord
+      parameters:
+        - name: playerName
+          in: query
+          description: The name of the player
+          required: true
+          type: string
+
+        - name: format
+          in: query
+          description: Test or ODI
+          required: true
+          type: string
+          enum:
+            - "TEST"
+            - "ODI"
+          default: "TEST"
+
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/GetBatsmansRecordResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /getBowlersRecord:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: cricket-stats-controller
+    get:
+      description: Returns the record of the given bowler
+      # used as the method name of the controller
+      operationId: getBowlersRecord
+      parameters:
+        - name: playerName
+          in: query
+          description: The name of the player
+          required: true
+          type: string
+
+        - name: format
+          in: query
+          description: Test or ODI
+          required: true
+          type: string
+          enum:
+            - "TEST"
+            - "ODI"
+          default: "TEST"
+
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/GetBowlersRecordResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /swagger:
+    x-swagger-pipe: swagger_raw
+# complex objects have schema definitions
+definitions:
+  GetCaptainResponse:
+    required:
+      - captain
+    properties:
+      captain:
+        type: string
+  GetBatsmansRecordResponse:
+    required:
+      - name
+      - format
+      - matches
+      - runs
+      - average
+      - hundreds
+      - fifties
+    properties:
+      name:
+        type: string
+      format:
+        type: string
+      matches:
+        type: integer
+      runs:
+        type: integer
+      average:
+        type: number
+      hundreds:
+        type: integer
+      fifties:
+        type: integer
+  GetBowlersRecordResponse:
+    required:
+      - name
+      - format
+      - matches
+      - wickets
+      - average
+      - five-wickets
+      - ten-wickets
+    properties:
+      name:
+        type: string
+      format:
+        type: string
+      matches:
+        type: integer
+      wickets:
+        type: integer
+      average:
+        type: number
+      five-wickets:
+        type: integer
+      ten-wickets:
+        type: integer
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
