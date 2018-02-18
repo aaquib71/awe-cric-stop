@@ -1,5 +1,5 @@
 'use strict';
-var Promise
+
 var CricketStatsController = {};
 
 var StatsStore = require('./../services/cric-store');
