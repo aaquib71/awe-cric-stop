@@ -1,8 +1,8 @@
 'use strict';
-
+var Promise
 var CricketStatsController = {};
 
-var StatsStore = require('cric-store');
+var StatsStore = require('./../services/cric-store');
 
 CricketStatsController.getCaptain = function (req, res) {
   var query = req.query;
